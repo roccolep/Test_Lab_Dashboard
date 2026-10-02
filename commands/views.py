@@ -1,7 +1,14 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from .models import Command
+from .forms import CommandForm
 
 # Create your views here.
 def index(request):
-    commands = Command.objects.all()
-    return render(request, "commands/index.html", {"commands": commands})
+    if request.method == "POST":
+        form = CommandForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('index')
+    else:
+        form = CommandForm()
+    return render(request, "commands/index.html", {"form": form, "commands": Command.objects.all()})

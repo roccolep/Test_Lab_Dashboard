@@ -82,10 +82,12 @@
       font-weight: 600;
       white-space: nowrap;
     }
+    /* status colors */
     .status-pending     { background: #fff3cd; color: #8a6100; }
     .status-in_progress { background: #dbe7ff; color: #1d4ed8; }
     .status-completed   { background: #d7f5e0; color: #1a7a3a; }
     .status-failed      { background: #fde0e0; color: #b42318; }
+    /* priority colors */
     .priority-0 { background: #e8ecf4; color: #4a5568; }
     .priority-1 { background: #ffe8cc; color: #b45309; }
     .priority-2 { background: #fde0e0; color: #b42318; }
@@ -101,6 +103,54 @@
     }
 
     .empty { text-align: center; color: var(--muted); padding: 2rem 1rem; }
+
+    /* form */
+    form p { margin: 0 0 1rem; }
+    form label {
+      display: block;
+      font-size: .85rem;
+      font-weight: 600;
+      margin-bottom: .3rem;
+    }
+    form input[type="text"],
+    form textarea,
+    form select {
+      width: 100%;
+      padding: .6rem .75rem;
+      font: inherit;
+      color: var(--text);
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+    }
+    form textarea { min-height: 90px; font-family: ui-monospace, Consolas, monospace; }
+    form input:focus, form textarea:focus, form select:focus {
+      outline: 2px solid var(--accent);
+      outline-offset: 1px;
+    }
+    form button {
+      background: var(--accent);
+      color: #fff;
+      border: 0;
+      padding: .65rem 1.4rem;
+      font: inherit;
+      font-weight: 600;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    form button:hover { filter: brightness(1.1); }
+    .errorlist {
+      list-style: none;
+      margin: 0 0 .4rem;
+      padding: .4rem .7rem;
+      background: #fde0e0;
+      color: #b42318;
+      border-radius: 6px;
+      font-size: .85rem;
+    }
+    @media (prefers-color-scheme: dark) {
+      .errorlist { background: #4a1616; color: #ff9b9b; }
+    }
   </style>
 </head>
 <body>
@@ -112,6 +162,15 @@
   </header>
 
   <main>
+    <section class="card">
+      <h2>Send a command</h2>
+      <form method="post" id="command-form">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Send command</button>
+      </form>
+    </section>
+
     <section class="card">
       <h2>History <span class="count">{{ commands|length }} total</span></h2>
       <div class="table-wrap">
