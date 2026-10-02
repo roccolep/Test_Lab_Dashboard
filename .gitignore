@@ -6,3 +6,6 @@ db.sqlite3
 report.html
 junit.xml
 .pytest_cache/
+.coverage.*
+htmlcov/
+.pytest_cache/

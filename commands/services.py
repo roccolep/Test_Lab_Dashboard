@@ -1,5 +1,6 @@
-from .models import Command
 import re
+
+from .models import Command
 
 all_commands = ["move", "stop", "load"]
 

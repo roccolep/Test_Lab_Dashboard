@@ -1,8 +1,10 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import redirect, render
 
 from commands.services import submit
-from .models import Command
+
 from .forms import CommandForm
+from .models import Command
+
 
 # Create your views here.
 def index(request):
