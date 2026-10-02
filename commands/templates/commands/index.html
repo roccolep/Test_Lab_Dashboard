@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Test Lab Dashboard</title>
+  <style>
+    :root {
+      --bg: #f4f6fa;
+      --card: #ffffff;
+      --text: #1c2333;
+      --muted: #6b7489;
+      --border: #e3e7ef;
+      --accent: #3b5bdb;
+      --head: #f0f3fa;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #0f1420;
+        --card: #182033;
+        --text: #e6eaf5;
+        --muted: #8e99b3;
+        --border: #263150;
+        --accent: #7c93ff;
+        --head: #1d2742;
+      }
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+    }
+    header {
+      background: var(--accent);
+      color: #fff;
+      padding: 1.5rem 1rem;
+    }
+    header .inner, main { max-width: 960px; margin: 0 auto; }
+    header h1 { margin: 0; font-size: 1.6rem; }
+    header p { margin: .25rem 0 0; opacity: .85; font-size: .95rem; }
+    main { padding: 1.5rem 1rem 3rem; }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.25rem;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, .06);
+    }
+    .card h2 { margin: 0 0 1rem; font-size: 1.1rem; }
+    .count {
+      font-size: .8rem;
+      font-weight: 600;
+      color: var(--muted);
+      margin-left: .5rem;
+    }
+
+    .table-wrap { overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; font-size: .92rem; }
+    th, td { padding: .7rem .8rem; text-align: left; border-bottom: 1px solid var(--border); }
+    th {
+      background: var(--head);
+      font-size: .75rem;
+      text-transform: uppercase;
+      letter-spacing: .04em;
+      color: var(--muted);
+    }
+    tbody tr:hover { background: var(--head); }
+    td.name { font-weight: 600; }
+    td.reply { color: var(--muted); }
+    td.time { white-space: nowrap; color: var(--muted); }
+
+    .badge {
+      display: inline-block;
+      padding: .15rem .6rem;
+      border-radius: 999px;
+      font-size: .78rem;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+    .status-pending     { background: #fff3cd; color: #8a6100; }
+    .status-in_progress { background: #dbe7ff; color: #1d4ed8; }
+    .status-completed   { background: #d7f5e0; color: #1a7a3a; }
+    .status-failed      { background: #fde0e0; color: #b42318; }
+    .priority-0 { background: #e8ecf4; color: #4a5568; }
+    .priority-1 { background: #ffe8cc; color: #b45309; }
+    .priority-2 { background: #fde0e0; color: #b42318; }
+
+    @media (prefers-color-scheme: dark) {
+      .status-pending     { background: #4a3b0a; color: #ffd866; }
+      .status-in_progress { background: #1b2e63; color: #9db8ff; }
+      .status-completed   { background: #123d22; color: #6fdc96; }
+      .status-failed      { background: #4a1616; color: #ff9b9b; }
+      .priority-0 { background: #2a3350; color: #b3bdd6; }
+      .priority-1 { background: #4a3011; color: #ffc27a; }
+      .priority-2 { background: #4a1616; color: #ff9b9b; }
+    }
+
+    .empty { text-align: center; color: var(--muted); padding: 2rem 1rem; }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="inner">
+      <h1>Test Lab Dashboard</h1>
+      <p>Send commands and track the replies</p>
+    </div>
+  </header>
+
+  <main>
+    <section class="card">
+      <h2>History <span class="count">{{ commands|length }} total</span></h2>
+      <div class="table-wrap">
+        <table id="history">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Priority</th>
+              <th>Status</th>
+              <th>Reply</th>
+              <th>Sent</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for c in commands %}
+            <tr>
+              <td class="name">{{ c.name }}</td>
+              <td><span class="badge priority-{{ c.priority }}">{{ c.get_priority_display }}</span></td>
+              <td><span class="badge status-{{ c.status }}">{{ c.get_status_display }}</span></td>
+              <td class="reply">{{ c.reply|default:"—" }}</td>
+              <td class="time">{{ c.created_at|date:"M j, Y g:i A" }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+              <td colspan="5" class="empty">No commands yet.</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+</body>
+</html>
