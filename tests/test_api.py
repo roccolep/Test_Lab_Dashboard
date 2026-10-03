@@ -1,5 +1,7 @@
 import json
+
 import pytest
+
 from commands.models import Command
 
 pytestmark = [pytest.mark.regression, pytest.mark.api, pytest.mark.django_db]
