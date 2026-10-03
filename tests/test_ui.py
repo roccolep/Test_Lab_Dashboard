@@ -11,7 +11,6 @@ pytestmark = [pytest.mark.ui, pytest.mark.django_db(transaction=True)]
 
 
 def send_command(page, name, payload, priority="1"):
-    """Fill in the form on the page and click Send."""
     page.fill("#id_name", name)
     page.fill("#id_payload", payload)
     page.select_option("#id_priority", priority)
